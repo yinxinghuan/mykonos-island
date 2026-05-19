@@ -587,6 +587,70 @@ html, body {
     transform: translate(-50%, 0);
 }
 
+/* ── First-load hint ──────────────────────────────────────────── */
+/* Pulses at the bottom of the canvas the first time a player lands.
+   Fades out on their first canvas pointer-down. */
+.first-hint {
+    position: fixed;
+    left: 50%;
+    bottom: calc(env(safe-area-inset-bottom, 0) + 130px);
+    transform: translateX(-50%);
+    z-index: 50;
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 12px 22px;
+    background: rgba(14, 14, 18, 0.78);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 999px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: rgba(245, 240, 230, 0.95);
+    font-family: system-ui, -apple-system, sans-serif;
+    text-align: center;
+    animation: ai-first-hint-pulse 2.4s ease-in-out infinite;
+}
+.first-hint__line {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+}
+.first-hint__sub {
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(245, 240, 230, 0.65);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+.first-hint__chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    background: rgba(255, 220, 130, 0.18);
+    border: 1px solid rgba(255, 220, 130, 0.4);
+    color: #ffdc82;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1;
+}
+.first-hint.hidden {
+    opacity: 0;
+    animation: none;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+}
+@keyframes ai-first-hint-pulse {
+    0%, 100% { opacity: 0.55; transform: translateX(-50%) scale(1.0); }
+    50%      { opacity: 1;    transform: translateX(-50%) scale(1.04); }
+}
+
 /* ── Responsive: tablet (≤900px) ──────────────────────────────── */
 
 @media (max-width: 900px) {

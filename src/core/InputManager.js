@@ -63,7 +63,15 @@ export class InputManager {
 
     _bind() {
         const c = this.canvas;
-        c.addEventListener('mousedown',   e => this._onMouseDown(e));
+        // Fade the first-load hint the moment the player interacts with the
+        // canvas (mouse OR touch). One-shot, then never fires again.
+        const dismissHint = () => {
+            const hint = document.getElementById('first-hint');
+            if (hint && !hint.classList.contains('hidden')) {
+                hint.classList.add('hidden');
+            }
+        };
+        c.addEventListener('mousedown',   e => { dismissHint(); this._onMouseDown(e); });
         window.addEventListener('mousemove', e => this._onMouseMove(e));
         window.addEventListener('mouseup',   e => this._onMouseUp(e));
         c.addEventListener('contextmenu', e => e.preventDefault());
@@ -72,7 +80,7 @@ export class InputManager {
         // Touch handlers — passive: false so we can preventDefault and
         // stop the browser from scrolling, pinch-zooming the page, or
         // firing synthetic mouse events that would double-trigger us.
-        c.addEventListener('touchstart',  e => this._onTouchStart(e),  { passive: false });
+        c.addEventListener('touchstart',  e => { dismissHint(); this._onTouchStart(e); },  { passive: false });
         c.addEventListener('touchmove',   e => this._onTouchMove(e),   { passive: false });
         c.addEventListener('touchend',    e => this._onTouchEnd(e),    { passive: false });
         c.addEventListener('touchcancel', e => this._onTouchEnd(e),    { passive: false });
